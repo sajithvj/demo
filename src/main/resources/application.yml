@@ -1,4 +1,6 @@
 spring:
+  api:
+    key:  AIzaSyDpgSAYjJKOUtH6Pu5W0oW8ew5W_pg7t7E
   security:
     oauth2:
       client:

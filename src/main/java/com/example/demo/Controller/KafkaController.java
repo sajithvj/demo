@@ -27,13 +27,6 @@ public class KafkaController {
     @Autowired
     TestServiceImpl testService;
 
-//    @GetMapping("/publish-kafka")
-//    public void publishKafka(@RequestParam String key, @RequestParam String value) throws IOException {
-//        kafkaService.publishKafka(key,value);
-//    }
-
-
-
     @GetMapping("/trips")
     public ResponseEntity<String> tripsKafka(@RequestParam Integer id) throws Exception {
         List<TripsDto> list = new ArrayList<>();
@@ -51,8 +44,8 @@ public class KafkaController {
                         .starttime(trips.getStart_time().toString())
                         .stoptime(trips.getStop_time().toString()).build()).collect(Collectors.toList());
 
-        kafkaService.publishKafka(list.get(0));
-        return new ResponseEntity<>("Published Succesfully",HttpStatus.OK);
+//        kafkaService.publishKafka(list.get(0));
+        return new ResponseEntity<>("Published Successfully",HttpStatus.OK);
     }
 
     @GetMapping("/books")
@@ -62,6 +55,15 @@ public class KafkaController {
                 books -> BooksDto.builder().book_id(books.getBook_id()).name(books.getName()).build()).collect(Collectors.toList());
 
          kafkaService.publishBooks(booksDtos.get(0));
-        return new ResponseEntity<>("Published Succesfully",HttpStatus.OK);
+        return new ResponseEntity<>("Published Successfully",HttpStatus.OK);
+    }
+
+    @GetMapping("/items/{id}")
+    public ResponseEntity<String> deleteItem(@PathVariable Long id) {
+        // Code to delete the item with the given ID from the database
+
+        // If the item is successfully deleted
+        // return ResponseEntity with 204 status code and a response body
+        return new ResponseEntity<>("check the contents",HttpStatus.NO_CONTENT);
     }
 }
