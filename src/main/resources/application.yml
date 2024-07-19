@@ -1,16 +1,16 @@
 spring:
   api:
-    key:  AIzaSyDpgSAYjJKOUtH6Pu5W0oW8ew5W_pg7t7E
+    key:
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: 887911970851-se3qm5lad3fk995uqgtoucdbekm20j13.apps.googleusercontent.com
-            client-secret: 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
+            client-id:
+            client-secret:
         provider:
           custom-google:
-            issuer-uri: https://accounts.google.com
+            issuer-uri:
   logging:
     level:
       org.springframework.web.client.RestTemplate: DEBUG
@@ -18,17 +18,12 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb+srv://myAtlasDBUser:myatlas-001@myatlasclusteredu.h33zgbz.mongodb.net/?retryWrites=true&w=majority
-      database: library
-
+      uri:
+      database:
   kafka:
     properties:
       sasl.mechanism: PLAIN
       bootstrap.servers: localhost:9092
-      #sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username='T4T2MGN5CQ6IC5YO' password='cLg31yb411bPDPC0zelQ8q/l8yhjdd3QLP4kcdgQDgiSJCWWcaBEkW5vedH399i0';3
-      #security.protocol: SASL_SSL
+
       session.timeout.ms: 45000
       acks: all
-      #schema.registry.url: https://psrc-7qgn2.us-central1.gcp.confluent.cloud
-      #basic.auth.credentials.source: USER_INFO
-      #basic.auth.user.info: RCOU5WBWYN6PC7PR:Naixsj3U1eFKqJJ9RMSg6DSDdeOSXHHGEe3fVvvEgD5h0iK/CzujrTrElhW2MnOS
