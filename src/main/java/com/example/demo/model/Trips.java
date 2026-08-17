@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.util.List;
 @Data
-@Document("test_trips")
+@Document("trips")
 @Builder
 public class Trips {
     @Id

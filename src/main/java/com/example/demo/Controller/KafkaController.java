@@ -30,21 +30,35 @@ public class KafkaController {
     @GetMapping("/trips")
     public ResponseEntity<String> tripsKafka(@RequestParam Integer id) throws Exception {
         List<TripsDto> list = new ArrayList<>();
-        list=testService.getTripsByBikeid(id).stream().map(
-                trips -> TripsDto.builder().id(trips.getId())
-                        .bikeid(trips.getBikeid())
-                        .startstationid(trips.getStart_station_id())
-                        .endstationid(trips.getEnd_station_id())
-                        .tripduration(trips.getTripduration())
-                        .startstationname(trips.getStart_station_name())
-                        .endstationname(trips.getEnd_station_name())
-                        .birthyear(trips.getBirth_year())
-                        .startstationlocation(trips.getStart_station_location().toString())
-                        .endstationlocation(trips.getEnd_station_location().toString())
-                        .starttime(trips.getStart_time().toString())
-                        .stoptime(trips.getStop_time().toString()).build()).collect(Collectors.toList());
+        List<Trips> trips = testService.getTripsByBikeid(id);
+        list= trips.stream().map(trips1 -> {
+           TripsDto tripsDto= new TripsDto();
+           tripsDto.setId(trips1.getId());
+           tripsDto.setBikeid(trips1.getBikeid());
+           tripsDto.setTripduration(trips1.getTripduration());
+           return tripsDto;
+        }).collect(Collectors.toList());
+//        list=testService.getTripsByBikeid(id).stream().map(
+//                trips -> TripsDto.builder().id(trips.getId())
+//                        .bikeid(trips.getBikeid())
+//                        .startstationid(trips.getStart_station_id())
+//                        .endstationid(trips.getEnd_station_id())
+//                        .tripduration(trips.getTripduration())
+//                        .startstationname(trips.getStart_station_name())
+//                        .endstationname(trips.getEnd_station_name())
+//                        .birthyear(trips.getBirth_year())
+//                        .startstationlocation(trips.getStart_station_location().toString())
+//                        .endstationlocation(trips.getEnd_station_location().toString())
+//                        .starttime(trips.getStart_time().toString())
+//                        .stoptime(trips.getStop_time().toString()).build()).collect(Collectors.toList());
+       list.stream().forEach(i-> {
+           try {
+               kafkaService.publishKafka(i);
+           } catch (Exception e) {
+               throw new RuntimeException(e);
+           }
+       });
 
-//        kafkaService.publishKafka(list.get(0));
         return new ResponseEntity<>("Published Successfully",HttpStatus.OK);
     }
 

@@ -4,13 +4,17 @@ import com.example.demo.dto.BooksDto;
 import com.example.demo.dto.TripsDto;
 import com.example.demo.model.Books;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 public class PracticalAdvice {
     @JsonProperty("message") String message;
-    @JsonProperty("identifier")
+    @JsonProperty("tripsIdentifier")
     TripsDto identifier;
 
-    @JsonProperty("identifier")
+    @JsonProperty("booksIdentifier")
     BooksDto identifier2;
 
     public PracticalAdvice(String message, TripsDto identifier) {

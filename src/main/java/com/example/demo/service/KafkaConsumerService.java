@@ -9,6 +9,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
@@ -54,6 +55,7 @@ public class KafkaConsumerService {
 //            }
 //        }
 //    }
+
   @KafkaListener(topics = "first_test_topic",groupId = "kafka-java-getting-started")
   public void consume(String message) {System.out.println("Received Message: "+message);}
   @KafkaListener(topics = "topic_1",groupId = "kafka-group-1",clientIdPrefix = "string",containerFactory = "kafkaListenerContainerFactory")
@@ -62,18 +64,19 @@ public class KafkaConsumerService {
     System.out.println("Received String Message: " +message.partition() +"  "+message.key()+"  "+message.value());
 
   }
-
   @KafkaListener(topics = "topic_1",groupId = "kafka-group-1",clientIdPrefix = "object",containerFactory = "tripsKafkaListenerContainerFactory")
-  public void consumeJsonTopic(ConsumerRecord<String,Object> message, @Payload String payload) {
-    System.out.println("Payload"+payload);
+  public void consumeJsonTopic(ConsumerRecord<String,Object> message) {
+//    System.out.println("Payload"+payload);
+//    System.out.print("Received Json Message: "+message.toString());
     System.out.println("Received Json Message: " +message.key()+"  "+message.value());
 
   }
 
   @KafkaListener(topics = "topic_1",groupId = "kafka-group-1",clientIdPrefix = "bytearray",containerFactory = "byteKafkaListenerContainerFactory")
-  public void consumeByteTopic(ConsumerRecord<String,byte[]> message, @Payload String payload) {
-    System.out.println("Payload"+payload);
-    System.out.println("Received Byte Message: " +message.key()+"  "+message.value());
+  public void consumeByteTopic(ConsumerRecord<String,byte[]> message) {
+//    System.out.println("Payload"+payload);
+    System.out.print("Received Json Message: "+message.toString());
+//    System.out.println("Received Byte Message: " +message.key()+"  "+message.value());
 
   }
 

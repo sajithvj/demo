@@ -1,29 +1,84 @@
 spring:
   api:
-    key:
+    key:  AIzaSyDpgSAYjJKOUtH6Pu5W0oW8ew5W_pg7t7E
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id:
-            client-secret:
+            client-id: 887911970851-se3qm5lad3fk995uqgtoucdbekm20j13.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - openid
+              - profile
+              - email
         provider:
           custom-google:
-            issuer-uri:
+            issuer-uri: https://accounts.google.com
+
   logging:
     level:
       org.springframework.web.client.RestTemplate: DEBUG
-      org.springframework.kafka: TRACE,stdout
+      org.springframework.kafka: WARN
+      org.springframework.data.mongodb.core.MongoTemplate: WARN
+      org.springframework.data.mongodb.repository.Query: WARN
 
   data:
     mongodb:
-      uri:
-      database:
+      uri: mongodb+srv://myAtlasDBUser:myatlas-001@myatlasclusteredu.h33zgbz.mongodb.net/?appName=myAtlasClusterEDU
+      database: library
+      show-sql: true
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 30m
+      cache-null-values: false
   kafka:
+    enabled: false
+    listener:
+      auto-startup: false
     properties:
       sasl.mechanism: PLAIN
       bootstrap.servers: localhost:9092
-
+      #sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username='T4T2MGN5CQ6IC5YO' password='cLg31yb411bPDPC0zelQ8q/l8yhjdd3QLP4kcdgQDgiSJCWWcaBEkW5vedH399i0';3
+      #security.protocol: SASL_SSL
       session.timeout.ms: 45000
       acks: all
+      #schema.registry.url: https://psrc-7qgn2.us-central1.gcp.confluent.cloud
+      #basic.auth.credentials.source: USER_INFO
+      #basic.auth.user.info: RCOU5WBWYN6PC7PR:Naixsj3U1eFKqJJ9RMSg6DSDdeOSXHHGEe3fVvvEgD5h0iK/CzujrTrElhW2MnOS
+
+  management:
+    endpoints:
+      web:
+       exposure:
+        include:
+          - health      # Essential for viewing circuit breaker state
+          - metrics     # Exposes numeric metrics to Prometheus/Grafana
+          - info        # General app info
+          - resilience4jevents # Optional: Tracks state changes and failures
+    endpoint:
+     health:
+      show-details: always
+    health:
+      circuitbreakers:
+        enabled: true
+      ratelimiters:
+        enabled: true
+  resilience4j:
+    circuitbreaker:
+      instances:
+        userServiceCB:
+          slidingWindowSize: 10
+          failureRateThreshold: 50
+          waitDurationInOpenState: 5s
+          minimumNumberOfCalls: 5
+          automaticTransitionFromOpenToHalfOpenEnabled: true
+          slidingWindowType: count-based
+
+    retry:
+      instances:
+        userServiceRetry:
+          maxAttempts: 3
+          waitDuration: 2s

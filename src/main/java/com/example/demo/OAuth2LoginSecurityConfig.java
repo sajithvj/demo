@@ -2,6 +2,7 @@ package com.example.demo;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.web.SecurityFilterChain;
@@ -18,12 +19,13 @@ public class OAuth2LoginSecurityConfig {
         googleScopes.add("https://www.googleapis.com/auth/userinfo.profile");
 
         OidcUserService googleUserService = new OidcUserService();
-        googleUserService.setAccessibleScopes(googleScopes);
+        googleUserService.setRetrieveUserInfo(oidcUserRequest -> true);
 
-        http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest()
+
+        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest()
                         .authenticated())
-                .oauth2Login(oauthLogin -> oauthLogin.userInfoEndpoint()
-                        .oidcUserService(googleUserService));
+                .oauth2Login(oauth -> oauth.userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.oidcUserService(googleUserService)));
+
         return http.build();
     }
 

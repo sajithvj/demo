@@ -54,11 +54,11 @@ public class KafkaService {
                         new PracticalAdvice("Trips Details", tripsDto))
                 );
         latch.await(60, TimeUnit.SECONDS);
-
-        this.kafkaTemplate.send(kafkaTopic,1, String.valueOf(1),
-                new StringPracticalAdvice("String Details","test string"));
+//
+//        this.kafkaTemplate.send(kafkaTopic,1, String.valueOf(1),
+//                new StringPracticalAdvice("String Details","test string"));
         kafkaTemplate.flush();
-        //kafkaTemplate.send(kafkaTopic,tripsDto);
+//        kafkaTemplate.send(kafkaTopic,tripsDto);
     }
 
     public void publishBooks(BooksDto books)throws Exception{
@@ -69,9 +69,9 @@ public class KafkaService {
                 );
         latch.await(60, TimeUnit.SECONDS);
 
-        this.kafkaTemplate.send(kafkaTopic,1, String.valueOf(1),
-                new StringPracticalAdvice("String Details","test string"));
+//        this.kafkaTemplate.send(kafkaTopic,1, String.valueOf(1),
+//                new StringPracticalAdvice("String Details","test string"));
         kafkaTemplate.flush();
-        //kafkaTemplate.send(kafkaTopic,tripsDto);
+//        kafkaTemplate.send(kafkaTopic,books);
     }
 }

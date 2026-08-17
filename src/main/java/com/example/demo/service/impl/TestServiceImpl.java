@@ -6,9 +6,11 @@ import com.example.demo.service.KafkaConsumerService;
 import com.example.demo.service.KafkaService;
 import com.example.demo.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -52,8 +54,10 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
+    @Cacheable(value = "trips",key = "#bikeid")
     public List<Trips> getTripsByBikeid(Integer bikeid) {
-        return tripsRepository.findByBikeId(bikeid);
+        List<Trips> trips = tripsRepository.findByBikeId(bikeid);
+        return trips;
     }
 
     @Override

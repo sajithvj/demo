@@ -10,13 +10,11 @@ import com.example.demo.service.impl.TestServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -26,20 +24,20 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 public class KafkaControllerTest {
 
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private KafkaService kafkaService;
 
-    @MockBean
+    @MockitoBean
     private TestServiceImpl testService;
 
     @InjectMocks
@@ -72,8 +70,10 @@ public class KafkaControllerTest {
                 .build();
 
         List<Trips> tripsDtos = Collections.singletonList(tripsDto);
+        given(testService.getTripsByBikeid(any(Integer.class)))
+                .willReturn(tripsDtos);
 
-        when(testService.getTripsByBikeid(any(Integer.class))).thenReturn(Collections.singletonList(tripsDto));
+//        when(testService.getTripsByBikeid(any(Integer.class))).thenReturn(Collections.singletonList(tripsDto));
         doNothing().when(kafkaService).publishKafka(any(TripsDto.class));
 
         ResponseEntity<String> response = kafkaController.tripsKafka(1);
